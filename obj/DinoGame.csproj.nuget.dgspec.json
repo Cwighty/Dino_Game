@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\agent\\Source\\Repos\\Dino_Game\\DinoGame.csproj": {}
+    "C:\\Users\\agent\\Nextcloud\\Code\\IntroSE\\DinoGame\\DinoGame.csproj": {}
   },
   "projects": {
-    "C:\\Users\\agent\\Source\\Repos\\Dino_Game\\DinoGame.csproj": {
+    "C:\\Users\\agent\\Nextcloud\\Code\\IntroSE\\DinoGame\\DinoGame.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\agent\\Source\\Repos\\Dino_Game\\DinoGame.csproj",
+        "projectUniqueName": "C:\\Users\\agent\\Nextcloud\\Code\\IntroSE\\DinoGame\\DinoGame.csproj",
         "projectName": "DinoGame",
-        "projectPath": "C:\\Users\\agent\\Source\\Repos\\Dino_Game\\DinoGame.csproj",
+        "projectPath": "C:\\Users\\agent\\Nextcloud\\Code\\IntroSE\\DinoGame\\DinoGame.csproj",
         "packagesPath": "C:\\Users\\agent\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\agent\\Source\\Repos\\Dino_Game\\obj\\",
+        "outputPath": "C:\\Users\\agent\\Nextcloud\\Code\\IntroSE\\DinoGame\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\agent\\AppData\\Roaming\\NuGet\\NuGet.Config",
