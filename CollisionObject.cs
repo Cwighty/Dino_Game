@@ -17,7 +17,7 @@
             return (this.X, this.Y);
         }
 
-        public CollisionObject(int x, int y, int height, int width)
+        public CollisionObject(int x, int y, int width, int height)
         {
             DrawPoints = new List<DrawPoint>();
             X = x;
