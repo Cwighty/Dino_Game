@@ -10,6 +10,7 @@
         private List<DrawPoint> drawPoints;
 
         public List<DrawPoint> DrawPoints {get => drawPoints; internal set => drawPoints = value; }
+        public bool IsVisible { get; set; }
 
         public (int, int) GetPosition()
         {
