@@ -19,6 +19,10 @@
             objectsToDraw.Add(bird);
             objectsToDraw.Add(cactus);
 
+            display.PrintStartScreen();
+            // TODO: Wait for spacebar press here
+            Thread.Sleep(2000);
+            //
             while(true)
             {
                 objectsToDraw = CheckVisiblity(objectsToDraw);
