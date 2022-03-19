@@ -6,7 +6,7 @@
         {
             get;
         }
-
+        public bool IsVisible { get; set; }
     }
     public struct DrawPoint
     {
