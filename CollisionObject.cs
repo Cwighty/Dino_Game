@@ -9,11 +9,20 @@
 
         private List<DrawPoint> drawPoints;
 
-        public List<DrawPoint> DrawPoints => drawPoints;
+        public List<DrawPoint> DrawPoints {get => drawPoints; internal set => drawPoints = value; }
 
         public (int, int) GetPosition()
         {
             return (this.X, this.Y);
+        }
+
+        public CollisionObject(int x, int y, int height, int width)
+        {
+            DrawPoints = new List<DrawPoint>();
+            X = x;
+            Y = y;
+            Height = height;
+            Width = width;
         }
      }
 }

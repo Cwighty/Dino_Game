@@ -10,11 +10,13 @@
         {
             this.height = height;
             this.width = width;
+            nextFrame = new List<DrawPoint>();
+            currentFrame = new List<DrawPoint>();
         }
         
         public void DrawNextFrame(List<IDrawable> objects)
         {
-            var tempList = new List<DrawPoint>();
+            nextFrame = new List<DrawPoint>();
             foreach (IDrawable obj in objects)
             {
                 foreach (DrawPoint point in obj.DrawPoints)
@@ -25,9 +27,9 @@
         }
         public void PrintCurrentFrame()
         {
-            
                 foreach (var point in nextFrame)
                 {
+                    Console.CursorVisible = false;
                     Console.SetCursorPosition(point.X, this.height - point.Y);
                     Console.Write(point.Character);
                 }
