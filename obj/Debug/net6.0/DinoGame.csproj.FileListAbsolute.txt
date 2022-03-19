@@ -13,3 +13,18 @@ C:\Users\agent\Nextcloud\Code\IntroSE\DinoGame\obj\Debug\net6.0\refint\DinoGame.
 C:\Users\agent\Nextcloud\Code\IntroSE\DinoGame\obj\Debug\net6.0\DinoGame.pdb
 C:\Users\agent\Nextcloud\Code\IntroSE\DinoGame\obj\Debug\net6.0\DinoGame.genruntimeconfig.cache
 C:\Users\agent\Nextcloud\Code\IntroSE\DinoGame\obj\Debug\net6.0\ref\DinoGame.dll
+C:\Users\Drew Gordon\Source\Repos\Dino_Game\bin\Debug\net6.0\DinoGame.exe
+C:\Users\Drew Gordon\Source\Repos\Dino_Game\bin\Debug\net6.0\DinoGame.deps.json
+C:\Users\Drew Gordon\Source\Repos\Dino_Game\bin\Debug\net6.0\DinoGame.runtimeconfig.json
+C:\Users\Drew Gordon\Source\Repos\Dino_Game\bin\Debug\net6.0\DinoGame.dll
+C:\Users\Drew Gordon\Source\Repos\Dino_Game\bin\Debug\net6.0\DinoGame.pdb
+C:\Users\Drew Gordon\Source\Repos\Dino_Game\obj\Debug\net6.0\DinoGame.csproj.AssemblyReference.cache
+C:\Users\Drew Gordon\Source\Repos\Dino_Game\obj\Debug\net6.0\DinoGame.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Drew Gordon\Source\Repos\Dino_Game\obj\Debug\net6.0\DinoGame.AssemblyInfoInputs.cache
+C:\Users\Drew Gordon\Source\Repos\Dino_Game\obj\Debug\net6.0\DinoGame.AssemblyInfo.cs
+C:\Users\Drew Gordon\Source\Repos\Dino_Game\obj\Debug\net6.0\DinoGame.csproj.CoreCompileInputs.cache
+C:\Users\Drew Gordon\Source\Repos\Dino_Game\obj\Debug\net6.0\DinoGame.dll
+C:\Users\Drew Gordon\Source\Repos\Dino_Game\obj\Debug\net6.0\refint\DinoGame.dll
+C:\Users\Drew Gordon\Source\Repos\Dino_Game\obj\Debug\net6.0\DinoGame.pdb
+C:\Users\Drew Gordon\Source\Repos\Dino_Game\obj\Debug\net6.0\DinoGame.genruntimeconfig.cache
+C:\Users\Drew Gordon\Source\Repos\Dino_Game\obj\Debug\net6.0\ref\DinoGame.dll

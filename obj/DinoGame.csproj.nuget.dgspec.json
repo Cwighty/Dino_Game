@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\agent\\Nextcloud\\Code\\IntroSE\\DinoGame\\DinoGame.csproj": {}
+    "C:\\Users\\Drew Gordon\\Source\\Repos\\Dino_Game\\DinoGame.csproj": {}
   },
   "projects": {
-    "C:\\Users\\agent\\Nextcloud\\Code\\IntroSE\\DinoGame\\DinoGame.csproj": {
+    "C:\\Users\\Drew Gordon\\Source\\Repos\\Dino_Game\\DinoGame.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\agent\\Nextcloud\\Code\\IntroSE\\DinoGame\\DinoGame.csproj",
+        "projectUniqueName": "C:\\Users\\Drew Gordon\\Source\\Repos\\Dino_Game\\DinoGame.csproj",
         "projectName": "DinoGame",
-        "projectPath": "C:\\Users\\agent\\Nextcloud\\Code\\IntroSE\\DinoGame\\DinoGame.csproj",
-        "packagesPath": "C:\\Users\\agent\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\agent\\Nextcloud\\Code\\IntroSE\\DinoGame\\obj\\",
+        "projectPath": "C:\\Users\\Drew Gordon\\Source\\Repos\\Dino_Game\\DinoGame.csproj",
+        "packagesPath": "C:\\Users\\Drew Gordon\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Drew Gordon\\Source\\Repos\\Dino_Game\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\agent\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Drew Gordon\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
