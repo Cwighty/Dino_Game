@@ -11,19 +11,24 @@
         {
             var display = new Display(displayHeight, displayWidth);
             var objectsToDraw = new List<IDrawable>();
+            var rand = new Random();
             //TODO: add your cactus/birds/dinos to the collisionObject list to print them out
             // You can create an object at the position you want it : See the bird class for how to implement IDrawable
-            var bird = new Bird(displayWidth, 10, 1, 2);
+            var bird = new Bird(displayWidth, rand.Next(displayHeight-5, displayHeight));
+            var cactus = new Cactus(displayWidth, 1, 3, 1);
             objectsToDraw.Add(bird);
+            objectsToDraw.Add(cactus);
 
             while(true)
             {
                 objectsToDraw = CheckVisiblity(objectsToDraw);
                 Console.Clear();
+                DisplayScore();
                 display.DrawNextFrame(objectsToDraw);
                 display.PrintCurrentFrame();
                 Thread.Sleep(4000/gameSpeed);
                 //You can move you object here
+                cactus.moveLeft();
                 bird.moveLeft();
 
                 score++;
@@ -41,6 +46,12 @@
                 }
             }
             return visiblity;
+        }
+
+        public static void DisplayScore()
+        {
+            Console.SetCursorPosition(0, 0);
+            Console.Write("Score: " + score);
         }
     }
 }
