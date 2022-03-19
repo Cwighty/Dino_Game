@@ -35,5 +35,11 @@
                 }
         }
 
-    }
+        public void PrintStartScreen()
+        {
+            Console.SetCursorPosition(this.width / 5, this.height / 2);
+            Console.WriteLine("Press the spacebar to start the game.");
+        }
+
+        }
 }

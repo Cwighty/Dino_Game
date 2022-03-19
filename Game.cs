@@ -16,6 +16,10 @@
             var bird = new Bird(displayWidth, 10, 1, 2);
             objectsToDraw.Add(bird);
 
+            display.PrintStartScreen();
+            // TODO: Wait for spacebar press here
+            Thread.Sleep(2000);
+            //
             while(true)
             {
                 objectsToDraw = CheckVisiblity(objectsToDraw);
