@@ -57,5 +57,34 @@
             Console.SetCursorPosition(0, 0);
             Console.Write("Score: " + score);
         }
+        public string getObject()
+        {
+            Random rnd = new Random();
+            int type = rnd.Next(2);
+            if (type == 0) //bird 
+            {
+                int height == rnd.Next(1, 3)
+                return Bird.Bird(height);
+            }
+            else //cactus
+            {
+                int width = rnd.Next(6);
+                if (width <= 3)
+                {
+                    return Cactus.Cactus(int height = rnd.Next(5));
+                }
+                if (width <= 5)
+                {
+                    return Cactus.Cactus(int height = rnd.Next(5)) + Cactus.Cactus(int height = rnd.Next(5));
+                }
+                if (width == 6)
+                {
+                    return Cactus.Cactus(int height = rnd.Next(5)) + Cactus.Cactus(int height = rnd.Next(5)) + Cactus.Cactus(int height = rnd.Next(5));
+
+                }
+
+            }
+
+        }
     }
 }
