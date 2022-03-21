@@ -6,6 +6,8 @@
         {
             //this.DrawPoints = new List<DrawPoint>() { new DrawPoint(x, y, 'e') };
             this.IsVisible = true;
+            var rand = new Random();
+            this.Y = rand.Next(1, rand.Next(1, y));
         }
 
         public void moveLeft()
@@ -14,7 +16,7 @@
             
             if(X>0)
             {
-                X--;
+                X -= 1;
                 if (X % 2 == 0)
                 {
                     this.DrawPoints = new List<DrawPoint>() { new DrawPoint(X, Y, 'V'), new DrawPoint(X + 1, Y, 'V') };

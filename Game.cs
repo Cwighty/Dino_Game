@@ -2,7 +2,7 @@
 {
     public class Game
     {
-        static int displayWidth = 60;
+        static int displayWidth = 100;
         static int displayHeight = 20;
         static int gameSpeed = 1000;
         static int score = 0;
@@ -17,8 +17,8 @@
             var rand = new Random();
             //TODO: add your cactus/birds/dinos to the collisionObject list to print them out
             // You can create an object at the position you want it : See the bird class for how to implement IDrawable
-            var bird = new Bird(displayWidth, rand.Next(displayHeight-5, displayHeight));
-            var cactus = new Cactus(displayWidth, 0, 3, 1);
+            var bird = new Bird(displayWidth, displayHeight);
+            var cactus = new Cactus(displayWidth);
             var dino = new Dino(5, 0, 2, 1);
             objectsToDraw.Add(bird);
             objectsToDraw.Add(cactus);
