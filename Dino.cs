@@ -14,11 +14,8 @@
         
         public void Move(int spaces)
         {
-           
                 Y += spaces;
                 this.DrawPoints = new List<DrawPoint>() { new DrawPoint(X, Y, 'R'), new DrawPoint(X, Y + 1, 'e') };
-            
-
            
         }
     }
