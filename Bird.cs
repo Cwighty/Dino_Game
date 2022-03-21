@@ -2,11 +2,10 @@
 {
     public class Bird : CollisionObject
     {
-        public Bird(int x, int y, int height = 0) :base(x, y, 1, 2) //how to handle height of bird? Add white space under or just spawn heigher up?
+        public Bird(int x, int y) :base(x, y, 1, 2)
         {
             //this.DrawPoints = new List<DrawPoint>() { new DrawPoint(x, y, 'e') };
             this.IsVisible = true;
-            return "ᕙ‗っ‗";
         }
 
         public void moveLeft()

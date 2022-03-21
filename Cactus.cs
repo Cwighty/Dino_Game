@@ -2,21 +2,8 @@
 {
     public class Cactus : CollisionObject
     {
-        public Cactus(int x, int y, int height) : base(x, y, width, height)
+        public Cactus(int x, int y, int width, int height) : base(x, y, width, height)
         {
-            if (height <= 2) //weighting towards smaller cactus
-            {
-                 return "∩\n⊂||つ"
-            }
-            else if (height <= 4)
-            {
-                 return "∩\n⊂||つ\n||"
-            }
-            else if (height == 5)
-            {
-                return cactus = "∩\n⊂||つ\n||\n||"
-
-            }
             this.IsVisible = true;
         }
 
