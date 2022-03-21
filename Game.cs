@@ -21,15 +21,17 @@
 
             display.PrintStartScreen();
             // TODO: Wait for spacebar press here
-            Thread.Sleep(2000);
+            Thread.Sleep(100);
             //
             while(true)
             {
                 objectsToDraw = CheckVisiblity(objectsToDraw);
                 Console.Clear();
+
                 DisplayScore();
                 display.DrawNextFrame(objectsToDraw);
                 display.PrintCurrentFrame();
+
                 Thread.Sleep(4000/gameSpeed);
                 //You can move you object here
                 cactus.moveLeft();
