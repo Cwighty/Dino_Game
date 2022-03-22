@@ -2,26 +2,26 @@
 {
     public class Bird : CollisionObject
     {
-        public Bird(int x, int y) :base(x, y, 1, 2)
+        public Bird(int lengthOfDisplay, int topOfDisplay) :base(lengthOfDisplay, topOfDisplay, 1, 2)
         {
             //this.DrawPoints = new List<DrawPoint>() { new DrawPoint(x, y, 'e') };
             this.IsVisible = true;
             var rand = new Random();
-            this.Y = rand.Next(1, rand.Next(1, y));
+            this.Y = rand.Next(1, rand.Next(1, topOfDisplay));
         }
 
-        public void moveLeft()
+        public void MoveLeft()
         {
             // SAMPLE CODE FOR MOVING AND UPDATING DRAW POINT
             
             if(X>0)
             {
                 X -= 1;
-                if (X % 2 == 0)
+                if (X % 8 == 0 || X % 8 == 1 || X % 8 == 2 || X % 8 == 3)
                 {
                     this.DrawPoints = new List<DrawPoint>() { new DrawPoint(X, Y, 'V'), new DrawPoint(X + 1, Y, 'V') };
                 }
-                if (X % 2 == 1)
+                else
                 {
                     this.DrawPoints = new List<DrawPoint>() { new DrawPoint(X, Y, '~'), new DrawPoint(X + 1, Y, '~') };
                 }

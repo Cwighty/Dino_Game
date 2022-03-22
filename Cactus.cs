@@ -10,7 +10,7 @@
             this.Width = rand.Next(1, 4);
         }
 
-        public void moveLeft()
+        public void MoveLeft()
         {
 
             if (X > 0)
