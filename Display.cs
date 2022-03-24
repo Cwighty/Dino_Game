@@ -62,7 +62,7 @@
         public void PrintGround()
         {
             string newGround = new string(ground);
-            Console.SetCursorPosition(0, this.height);
+            Console.SetCursorPosition(0, this.height+1);
             Console.Write(newGround);
         }
 

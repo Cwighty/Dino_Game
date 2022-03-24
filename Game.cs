@@ -2,10 +2,11 @@
 {
     public class Game
     {
-        static int displayWidth = 60;
+        static int displayWidth = 100;
         static int displayHeight = 20;
         static int gameSpeed = 1000;
         static int score = 0;
+        static int spawnTimer = 0;
         static List<CollisionObject> collisionObjects = new List<CollisionObject>();
         private static bool jumping;
         private static int jumpFrame;
@@ -17,11 +18,7 @@
             var rand = new Random();
             //TODO: add your cactus/birds/dinos to the collisionObject list to print them out
             // You can create an object at the position you want it : See the bird class for how to implement IDrawable
-            var bird = new Bird(displayWidth, rand.Next(displayHeight-5, displayHeight));
-            var cactus = new Cactus(displayWidth, 0, 3, 1);
             var dino = new Dino(5, 0, 2, 1);
-            objectsToDraw.Add(bird);
-            objectsToDraw.Add(cactus);
             objectsToDraw.Add(dino);
 
             display.PrintStartScreen();
@@ -30,15 +27,34 @@
             //
             while (true)
             {
+                //Drawing
                 objectsToDraw = CheckVisiblity(objectsToDraw);
                 Console.Clear();
                 DisplayScore();
                 display.DrawNextFrame(objectsToDraw);
                 display.PrintCurrentFrame();
                 Thread.Sleep(4000/gameSpeed);
-                bird.moveLeft();
-                cactus.moveLeft();
-                //You can move you object here
+
+                //Spawn lottery
+                if(timeToSpawn(spawnTimer))
+                {
+                    objectsToDraw.Add(getObstacle());
+                    spawnTimer = 0;
+                }
+
+                // Move the birds and the cacti left
+                foreach(var o in objectsToDraw)
+                {
+                    if(o is Bird)
+                    {
+                        ((Bird) o).MoveLeft();
+                    }
+                    else if (o is Cactus)
+                    {
+                        ((Cactus) o).MoveLeft();
+                    }
+                }
+
                 if (Console.KeyAvailable)
                 {
                     jumping = true;
@@ -57,9 +73,11 @@
                 }
 
                 score++;
+                spawnTimer++;
             }
 
         }
+
 
         private static void Jump(int jumpFrame, Dino dino)
         {
@@ -84,6 +102,39 @@
         {
             Console.SetCursorPosition(0, 0);
             Console.Write("Score: " + score);
+        }
+
+        private static CollisionObject getObstacle()
+        {
+            Random rnd = new Random();
+            int type = rnd.Next(3);
+            if (type == 0) //bird 
+            {
+                return new Bird(displayWidth, displayHeight);
+            }
+            else
+            {
+                return new Cactus(displayWidth);
+            }
+
+        }
+        private static bool timeToSpawn(int time)
+        {
+            var rand = new Random();
+            if (rand.Next(0,5) == 0)
+            {
+                // Occasionally close together spawn
+                if (time >= rand.Next(20, 50))
+                {
+                    return true;
+                }
+            }
+            if (time >= rand.Next(50, 150))
+            {
+                // Average spawn with some distance between
+                return true;
+            }
+            return false;
         }
     }
 }

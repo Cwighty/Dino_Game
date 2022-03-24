@@ -2,12 +2,15 @@
 {
     public class Cactus : CollisionObject
     {
-        public Cactus(int x, int y, int width, int height) : base(x, y, width, height)
+        public Cactus(int x) : base(x, 0, 0, 0)
         {
             this.IsVisible = true;
+            var rand = new Random();
+            this.Height = rand.Next(1, 3);
+            this.Width = rand.Next(1, 4);
         }
 
-        public void moveLeft()
+        public void MoveLeft()
         {
 
             if (X > 0)
