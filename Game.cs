@@ -4,7 +4,7 @@
     {
         static int displayWidth = 100;
         static int displayHeight = 20;
-        static int gameSpeed = 1000;
+        static int gameSpeed = 400;
         static int score = 0;
         static int spawnTimer = 0;
         static List<CollisionObject> collisionObjects = new List<CollisionObject>();
@@ -18,6 +18,8 @@
             var rand = new Random();
             //TODO: add your cactus/birds/dinos to the collisionObject list to print them out
             // You can create an object at the position you want it : See the bird class for how to implement IDrawable
+            var background = new Background(displayWidth, displayHeight);
+            objectsToDraw.Add(background);
             var dino = new Dino(5, 0, 2, 1);
             objectsToDraw.Add(dino);
 
@@ -28,6 +30,10 @@
             while (true)
             {
                 //Drawing
+                if (score % 2000 == 0) {
+                    ToggleDayAndNight();
+                }
+
                 objectsToDraw = CheckVisiblity(objectsToDraw);
                 Console.Clear();
                 DisplayScore();
@@ -35,6 +41,10 @@
                 display.PrintCurrentFrame();
                 Thread.Sleep(4000/gameSpeed);
 
+                if (score % 4 == 0)
+                {
+                    background.MoveLeft();
+                }
                 //Spawn lottery
                 if(timeToSpawn(spawnTimer))
                 {
@@ -43,6 +53,9 @@
                 }
 
                 // Move the birds and the cacti left
+                //if(score % 3 == 0)
+                //{
+
                 foreach(var o in objectsToDraw)
                 {
                     if(o is Bird)
@@ -54,6 +67,7 @@
                         ((Cactus) o).MoveLeft();
                     }
                 }
+                //}
 
                 if (Console.KeyAvailable)
                 {
@@ -65,7 +79,7 @@
                 {
                     Jump(jumpFrame, dino);
                     jumpFrame++;
-                    if(jumpFrame == 10)
+                    if(jumpFrame == 16)
                     {
                         jumping = false;
                         jumpFrame = 0;
@@ -78,10 +92,23 @@
 
         }
 
+        private static void ToggleDayAndNight()
+        {
+            if (Console.BackgroundColor == ConsoleColor.Black)
+            {
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
+            }
+            else
+            {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+        }
 
         private static void Jump(int jumpFrame, Dino dino)
         {
-            int[] frames = new int[] { 2, 2, 1, 1, 0,0 ,-1, -1, -2, -2 };
+            int[] frames = new int[] { 2,2, 2, 1,1, 1, 0,0,0,0 ,-1, -1,-1,-2, -2, -2 };
             dino.Move(frames[jumpFrame]);
         }
 

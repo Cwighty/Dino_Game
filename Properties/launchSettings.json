@@ -1,0 +1,24 @@
+{
+  "profiles": {
+    "DinoGame": {
+      "commandName": "Project"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "environmentVariables": {},
+      "distributionName": ""
+    },
+    "Powershell": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "commandLineArgs": "dotnet run $(projectpath)",
+      "workingDirectory": "$(projectdir)"
+    },
+    "Windows Terminal": {
+      "commandName": "Executable",
+      "executablePath": "$(userprofile)\\AppData\\Local\\Microsoft\\WindowsApps\\wt.exe",
+      "commandLineArgs": "dotnet.exe run –Project $(projectpath)",
+      "workingDirectory": "$(projectdir)"
+    }
+  }
+}

@@ -19,7 +19,7 @@
 
         public CollisionObject(int x, int y, int width, int height)
         {
-            DrawPoints = new List<DrawPoint>();
+            drawPoints = new List<DrawPoint>();
             X = x;
             Y = y;
             Height = height;
