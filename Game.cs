@@ -4,12 +4,13 @@
     {
         static int displayWidth = 100;
         static int displayHeight = 20;
-        static int gameSpeed = 400;
+        static int gameSpeed = 4000;
         static int score = 0;
         static int spawnTimer = 0;
         static List<CollisionObject> collisionObjects = new List<CollisionObject>();
         private static bool jumping;
         private static int jumpFrame;
+        private static Background background;
 
         public static void Main(string[] args)
         {
@@ -18,7 +19,7 @@
             var rand = new Random();
             //TODO: add your cactus/birds/dinos to the collisionObject list to print them out
             // You can create an object at the position you want it : See the bird class for how to implement IDrawable
-            var background = new Background(displayWidth, displayHeight);
+            background = new Background(displayWidth, displayHeight);
             objectsToDraw.Add(background);
             var dino = new Dino(5, 0, 2, 1);
             objectsToDraw.Add(dino);
@@ -96,11 +97,13 @@
         {
             if (Console.BackgroundColor == ConsoleColor.Black)
             {
+                background.IsDay = true;
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Black;
             }
             else
             {
+                background.IsDay = false;
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
             }

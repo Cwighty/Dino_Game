@@ -1,123 +1,115 @@
 ﻿namespace DinoGame
 {
-    public class Background : IDrawable
+    public partial class Background : IDrawable
     {
-        private List<DrawPoint> drawPoints;
-
-        private int backgroundPosition;
-
-        private List<IDrawable> backgroundDrawables;
-
-        private Moon moon;
-        private List<Cloud> clouds;
-
         private int width;
         private int height;
 
+        private List<DrawPoint> drawPoints;
+        public List<DrawPoint> DrawPoints => drawPoints;
+
+        private Moon moon;
+        private List<Star> stars;
+        private List<BackgroundObject> backgroundObjects;
+
+        public bool IsDay;
+
+        private bool WasDay;
+        public bool IsVisible { get; set; }
+
         public Background(int displayWidth, int displayHeight)
         {
-            this.drawPoints = new List<DrawPoint>();
-            backgroundDrawables = new List<IDrawable>();
-            backgroundPosition = 0;
             width = displayWidth;
             height = displayHeight;
-            this.IsVisible = true;
-            moon = new Moon(100, 15);
-            clouds = new List<Cloud>();
-            for (int i = 0; i < 10; i++)
-                clouds.Add(new Cloud(displayWidth, displayHeight));
 
-            backgroundDrawables.Add(moon);
-            backgroundDrawables.AddRange(clouds);
+            drawPoints = new List<DrawPoint>();
+            backgroundObjects = new List<BackgroundObject>();
 
-            foreach (IDrawable drawable in backgroundDrawables)
+            IsVisible = true;
+            IsDay = false;
+            WasDay = false;
+            stars = new List<Star>();
+            moon = new Moon(100, 15, 1);
+
+            generateBackgroundObjects();
+
+            foreach (IDrawable drawable in backgroundObjects)
             {
                 this.drawPoints.AddRange(drawable.DrawPoints);
             }
         }
 
-        public List<DrawPoint> DrawPoints => drawPoints;
+        private void generateBackgroundObjects()
+        {
+            if (!IsDay)
+            {
+                stars.Clear();
+                for (int i = 0; i < 80; i++)
+                    stars.Add(new Star(this.width, this.height, 1));
+                backgroundObjects.AddRange(stars);
 
+                moon = new Moon(100, 15, 1);
+                backgroundObjects.Insert(0, moon);
 
-        public bool IsVisible { get; set; }
+            }
+
+            for (int i = 0; i < 10; i++)
+                backgroundObjects.Add(new Cloud(this.width, this.height, 2));
+        }
 
         public void MoveLeft()
         {
-            moon.MoveLeft();
-            foreach (Cloud cloud in clouds)
-                cloud.MoveLeft();
+            if (WasDay && !IsDay)
+            {
+                generateBackgroundObjects();
+            }
+            if (IsDay)
+            {
+                moon.IsVisible = false;
+                foreach (var star in stars)
+                {
+                    if (star.IsVisible)
+                        star.IsVisible = false;
+                }
+            }
+            else
+            {
+                moon.IsVisible = true;
+                foreach (var star in stars)
+                {
+                    if (!star.IsVisible)
+                        star.IsVisible = true;
+                }
+            }
+
+            backgroundObjects = checkVisiblity(backgroundObjects);
+
+            if (backgroundObjects.Count < 10)
+                generateBackgroundObjects();
+
+            foreach (var obj in backgroundObjects)
+                obj.MoveLeft();
+
             this.DrawPoints.Clear();
-            foreach (IDrawable drawable in backgroundDrawables)
+            foreach (IDrawable drawable in backgroundObjects)
             {
-                this.drawPoints.AddRange(drawable.DrawPoints);
+                this.DrawPoints.AddRange(drawable.DrawPoints);
             }
+
+            WasDay = IsDay;
         }
 
-        internal class Moon : IDrawable
+        private static List<BackgroundObject> checkVisiblity(List<BackgroundObject> objects)
         {
-            private int originX;
-            private int originY;
-            private List<DrawPoint> drawPoints;
-
-            public Moon(int originX, int originY)
+            List<BackgroundObject> visibles = new List<BackgroundObject>();
+            foreach (BackgroundObject obj in objects)
             {
-                this.IsVisible = true;
-                this.originX = originX;
-                this.originY = originY;
-                this.drawPoints = Display.ConvertSpriteToDrawPoints(@"C:\Users\agent\source\repos\Dino_Game\Moon.txt", originX, originY);
-            }
-
-            public List<DrawPoint> DrawPoints => drawPoints;
-
-            public bool IsVisible { get; set; }
-
-            public void MoveLeft()
-            {   
-                if (this.drawPoints[drawPoints.Count-1].X >= 0)
+                if (obj.IsVisible)
                 {
-                    originX--;
-                    this.drawPoints = Display.ConvertSpriteToDrawPoints(@"C:\Users\agent\source\repos\Dino_Game\Moon.txt", originX, originY);
-                }
-                else
-                {
-                    this.IsVisible = false;
+                    visibles.Add(obj);
                 }
             }
-        }
-
-        internal class Cloud : IDrawable
-        {
-            private int originX;
-            private int originY;
-            private int id;
-            private List<DrawPoint> drawPoints;
-
-            public Cloud(int displayWidth, int displayHeight)
-            {
-                Random random = new Random();
-                this.IsVisible = true;
-                this.originX = displayWidth + random.Next(100);
-                this.originY = random.Next(8, displayHeight - 5);
-                this.id = random.Next(1, 4);
-                this.drawPoints = Display.ConvertSpriteToDrawPoints(@$"C:\Users\agent\source\repos\Dino_Game\Cloud{id}.txt", originX, originY);
-            }
-
-            public List<DrawPoint> DrawPoints => drawPoints;
-
-            public bool IsVisible { get; set; }
-
-            public void MoveLeft()
-            {
-                if (this.drawPoints[drawPoints.Count-1].X >= 0)
-                {
-                    originX -= 2;
-                    this.drawPoints = Display.ConvertSpriteToDrawPoints(@$"C:\Users\agent\source\repos\Dino_Game\Cloud{id}.txt", originX, originY);
-                }
-                else
-                {
-                    this.IsVisible = false;
-                }
-            }
+            return visibles;
         }
     }
 
