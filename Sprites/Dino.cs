@@ -19,19 +19,19 @@
 
         public void Jump(int jumpFrame)
         {
-            int[] frames = new int[] { 2, 2, 1, 1, 0, 0, -1, -1, -2, -2 };
+            int[] frames = new int[] { 2, 2, 2, 1, 1, 1, 0, 0, 0, 0, -1, -1, -1, -2, -2, -2 };
             this.Move(frames[jumpFrame]);
         }
 
         public void AnimateLegs()
         {
-            if (DrawPoints.Contains(new DrawPoint(X, Y, '┘')))
+            if (this.DrawPoints.Contains(new DrawPoint(X + 1, Y, '┘')))
             {
-                this.DrawPoints = new List<DrawPoint>() { new DrawPoint(X, Y, '|'), new DrawPoint(X - 1, Y, '┘'), new DrawPoint(X, Y + 1, '█'), new DrawPoint(X, Y + 2, '▄'), new DrawPoint(X - 1, Y + 1, '▄'), new DrawPoint(X + 1, Y + 2, '▄') };
+                this.DrawPoints = new List<DrawPoint>() { new DrawPoint(X + 1, Y, '|'), new DrawPoint(X, Y, '┘'), new DrawPoint(X + 1, Y + 1, '█'), new DrawPoint(X + 1, Y + 2, '▄'), new DrawPoint(X, Y + 1, '▄'), new DrawPoint(X + 2, Y + 2, '▄') };
             }
             else
             {
-                this.DrawPoints = new List<DrawPoint>() { new DrawPoint(X, Y, '┘'), new DrawPoint(X - 1, Y, '/'), new DrawPoint(X, Y + 1, '█'), new DrawPoint(X, Y + 2, '▄'), new DrawPoint(X - 1, Y + 1, '▄'), new DrawPoint(X + 1, Y + 2, '▄') };
+                this.DrawPoints = new List<DrawPoint>() { new DrawPoint(X + 1, Y, '┘'), new DrawPoint(X, Y, '/'), new DrawPoint(X + 1, Y + 1, '█'), new DrawPoint(X + 1, Y + 2, '▄'), new DrawPoint(X, Y + 1, '▄'), new DrawPoint(X + 2, Y + 2, '▄') };
             }
         }
     }

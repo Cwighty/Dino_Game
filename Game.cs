@@ -33,7 +33,18 @@
             {
                 if (checkCollision(objectsToDraw))
                 {
-                    Thread.Sleep(1000);
+                    display.GameOverScreen();
+                    if (askToRestart())
+                    {
+                        objectsToDraw.Clear();
+                        objectsToDraw.Add(background);
+                        objectsToDraw.Add(dino);
+                        score = 0;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
                 //Drawing
                 if (score % 2000 == 0) {
@@ -98,6 +109,16 @@
                 spawnTimer++;
             }
 
+            display.GameOverScreen();
+            Console.ReadLine();
+
+        }
+
+        private static bool askToRestart()
+        {
+            //TODO: Ask the player to restart or not
+            Console.ReadLine();
+            return true;
         }
 
         private static bool checkCollision(List<IDrawable> drawables)
@@ -136,12 +157,6 @@
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
             }
-        }
-
-        private static void Jump(int jumpFrame, Dino dino)
-        {
-            int[] frames = new int[] { 2,2, 2, 1,1, 1, 0,0,0,0 ,-1, -1,-1,-2, -2, -2 };
-            dino.Move(frames[jumpFrame]);
         }
 
         public static List<IDrawable> CheckVisiblity(List<IDrawable> otd)
