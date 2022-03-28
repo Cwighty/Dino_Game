@@ -1,17 +1,18 @@
-﻿namespace DinoGame
+﻿using System.Windows.Input;
+
+namespace DinoGame
 {
     public class Game
     {
         static int displayWidth = 100;
         static int displayHeight = 20;
-        static int gameSpeed = 4000;
+        static int gameSpeed = 1000;
         static int score = 0;
         static int spawnTimer = 0;
         static List<CollisionObject> collisionObjects = new List<CollisionObject>();
-        static Dino dino;
         private static bool jumping;
+        private static bool ducking;
         private static int jumpFrame;
-        private static Background background;
 
         public static void Main(string[] args)
         {
@@ -20,9 +21,7 @@
             var rand = new Random();
             //TODO: add your cactus/birds/dinos to the collisionObject list to print them out
             // You can create an object at the position you want it : See the bird class for how to implement IDrawable
-            background = new Background(displayWidth, displayHeight);
-            objectsToDraw.Add(background);
-            dino = new Dino(5, 0);
+            var dino = new Dino(5, 0, 2, 1);
             objectsToDraw.Add(dino);
 
             display.PrintStartScreen();
@@ -31,26 +30,7 @@
             //
             while (true)
             {
-                if (checkCollision(objectsToDraw))
-                {
-                    display.GameOverScreen();
-                    if (askToRestart())
-                    {
-                        objectsToDraw.Clear();
-                        objectsToDraw.Add(background);
-                        objectsToDraw.Add(dino);
-                        score = 0;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
                 //Drawing
-                if (score % 2000 == 0) {
-                    ToggleDayAndNight();
-                }
-
                 objectsToDraw = CheckVisiblity(objectsToDraw);
                 Console.Clear();
                 display.DisplayScore(score);
@@ -58,10 +38,6 @@
                 display.PrintCurrentFrame();
                 Thread.Sleep(4000/gameSpeed);
 
-                if (score % 4 == 0)
-                {
-                    background.MoveLeft();
-                }
                 //Spawn lottery
                 if(timeToSpawn(spawnTimer))
                 {
@@ -70,9 +46,6 @@
                 }
 
                 // Move the birds and the cacti left
-                //if(score % 3 == 0)
-                //{
-
                 foreach(var o in objectsToDraw)
                 {
                     if(o is Bird)
@@ -84,79 +57,50 @@
                         ((Cactus) o).MoveLeft();
                     }
                 }
-                //}
 
-                if (Console.KeyAvailable)
+                if(Console.KeyAvailable)
                 {
-                    jumping = true;
-                    Console.ReadKey(true);
+                    ConsoleKey key = Console.ReadKey().Key;
+                if (key == ConsoleKey.Spacebar || key == ConsoleKey.UpArrow || key == ConsoleKey.W)
+                {
+                   jumping = true;
                 }
+                if(key == ConsoleKey.DownArrow || key == ConsoleKey.S)
+                {
+                    ducking = true;
+                }
+
+                }
+
+                while(Console.KeyAvailable)
+                {
+                    Console.ReadKey(false);
+                }
+                
+                
 
                 if (jumping)
                 {
                     dino.Jump(jumpFrame);
                     jumpFrame++;
-                    if(jumpFrame == 16)
+                    if(jumpFrame == 20)
                     {
                         jumping = false;
                         jumpFrame = 0;
                     }
                 }
 
+                if(ducking)
+                {
+            
+                    dino.Duck();
+                }
 
                 dino.AnimateLegs();
                 score++;
                 spawnTimer++;
             }
 
-            display.GameOverScreen();
-            Console.ReadLine();
-
-        }
-
-        private static bool askToRestart()
-        {
-            //TODO: Ask the player to restart or not
-            Console.ReadLine();
-            return true;
-        }
-
-        private static bool checkCollision(List<IDrawable> drawables)
-        {
-            foreach (var o in drawables)
-            {
-                if (o is Bird)
-                {
-                    if(((Bird)o).GetHitBox().Overlaps(dino.GetHitBox()))
-                    {
-                        return true;
-                    }
-                }
-                else if (o is Cactus)
-                {
-                    if(((Cactus)o).GetHitBox().Overlaps(dino.GetHitBox()))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        private static void ToggleDayAndNight()
-        {
-            if (Console.BackgroundColor == ConsoleColor.Black)
-            {
-                background.IsDay = true;
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.ForegroundColor = ConsoleColor.Black;
-            }
-            else
-            {
-                background.IsDay = false;
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.ForegroundColor = ConsoleColor.White;
-            }
         }
 
         public static List<IDrawable> CheckVisiblity(List<IDrawable> otd)
