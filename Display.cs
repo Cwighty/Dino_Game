@@ -124,7 +124,17 @@
             while (i != 1);
             return newArray;
         }
+        public void DisplayScore(int score)
+        {
+            Console.SetCursorPosition(0, 0);
+            Console.Write("Score: " + score);
+        }
 
+        public void GameOverScreen()
+        {
+            Console.SetCursorPosition(width/3, height/3);
+            Console.Write("GAME OVER");
+        }
     }
 
 }

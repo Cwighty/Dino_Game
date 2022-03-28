@@ -42,7 +42,7 @@
 
                 objectsToDraw = CheckVisiblity(objectsToDraw);
                 Console.Clear();
-                DisplayScore();
+                display.DisplayScore(score);
                 display.DrawNextFrame(objectsToDraw);
                 display.PrintCurrentFrame();
                 Thread.Sleep(4000/gameSpeed);
@@ -83,7 +83,7 @@
 
                 if (jumping)
                 {
-                    Jump(jumpFrame, dino);
+                    dino.Jump(jumpFrame);
                     jumpFrame++;
                     if(jumpFrame == 16)
                     {
@@ -93,6 +93,7 @@
                 }
 
 
+                dino.AnimateLegs();
                 score++;
                 spawnTimer++;
             }
@@ -154,12 +155,6 @@
                 }
             }
             return visiblity;
-        }
-
-        public static void DisplayScore()
-        {
-            Console.SetCursorPosition(0, 0);
-            Console.Write("Score: " + score);
         }
 
         private static CollisionObject getObstacle()
