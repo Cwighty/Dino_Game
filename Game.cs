@@ -14,8 +14,8 @@ namespace DinoGame
         private static int jumpFrame;
         private static bool fallFaster;
         private static int duckCounter;
-        static Dino dino;
-        private static Background background;
+        static Dino dino = new Dino(5, 0);
+        private static Background background = new Background(displayWidth, displayHeight);
         private static SoundPlayer player = new SoundPlayer(@"./sound93.wav");
 
         public static void Main(string[] args)
