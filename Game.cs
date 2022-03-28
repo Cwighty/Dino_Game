@@ -6,13 +6,14 @@ namespace DinoGame
     {
         static int displayWidth = 100;
         static int displayHeight = 20;
-        static int gameSpeed = 1000;
+        static int gameSpeed = 500;
         static int score = 0;
         static int spawnTimer = 0;
         static List<CollisionObject> collisionObjects = new List<CollisionObject>();
         private static bool jumping;
-        private static bool ducking;
         private static int jumpFrame;
+        private static bool fallFaster;
+        private static int duckCounter;
         static Dino dino;
         private static Background background;
         private static SoundPlayer player = new SoundPlayer(@"./sound93.wav");
@@ -23,6 +24,7 @@ namespace DinoGame
             var display = new Display(displayHeight, displayWidth);
             var objectsToDraw = new List<IDrawable>();
             var rand = new Random();
+           
             //TODO: add your cactus/birds/dinos to the collisionObject list to print them out
             // You can create an object at the position you want it : See the bird class for how to implement IDrawable
             background = new Background(displayWidth, displayHeight);
@@ -41,7 +43,7 @@ namespace DinoGame
                     player = new SoundPlayer(@"Sound\gameoversound.wav");
                     player.Play();
                     display.GameOverScreen();
-                    if (askToRestart())
+                    if (display.AskToRestart())
                     {
                         objectsToDraw.Clear();
                         objectsToDraw.Add(background);
@@ -71,7 +73,7 @@ namespace DinoGame
                 display.DisplayScore(score);
                 display.DrawNextFrame(objectsToDraw);
                 display.PrintCurrentFrame();
-                Thread.Sleep(4000/gameSpeed);
+                Thread.Sleep(4000 / gameSpeed);
 
                 if (score % 4 == 0)
                 {
@@ -86,57 +88,79 @@ namespace DinoGame
                 }
 
                 // Move the birds and the cacti left
-                foreach(var o in objectsToDraw)
+                foreach (var o in objectsToDraw)
                 {
-                    if(o is Bird)
+                    if (o is Bird)
                     {
-                        ((Bird) o).MoveLeft();
+                        ((Bird)o).MoveLeft();
                     }
                     else if (o is Cactus)
                     {
-                        ((Cactus) o).MoveLeft();
+                        ((Cactus)o).MoveLeft();
                     }
                 }
 
-                if(Console.KeyAvailable)
+                if (Console.KeyAvailable)
                 {
                     ConsoleKey key = Console.ReadKey().Key;
-                if (key == ConsoleKey.Spacebar || key == ConsoleKey.UpArrow || key == ConsoleKey.W)
-                {
-                   jumping = true;
-                   player = new SoundPlayer(@"Sound\jumpSound.wav");
-                   player.Play();
+                    if (key == ConsoleKey.Spacebar || key == ConsoleKey.UpArrow || key == ConsoleKey.W)
+                    {
+                        jumping = true;
+                        player = new SoundPlayer(@"Sound\jumpSound.wav");
+                        player.Play();
+                    }
+                    if ((key == ConsoleKey.DownArrow || key == ConsoleKey.S) && !jumping)
+                    {
+                        dino.isDucking = true;
+                        dino.Duck();
 
                     }
-                if(key == ConsoleKey.DownArrow || key == ConsoleKey.S)
-                {
-                    ducking = true;
+                    if ((key == ConsoleKey.DownArrow || key == ConsoleKey.S) && jumping)
+                    {
+                        fallFaster = true;
+                    }
+                
                 }
 
-                }
-
-                while(Console.KeyAvailable)
+                while (Console.KeyAvailable)
                 {
                     Console.ReadKey(false);
                 }
-                
-                
 
-                if (jumping)
+                if (dino.isDucking)
                 {
-                    dino.Jump(jumpFrame);
-                    jumpFrame++;
-                    if(jumpFrame == 20)
+                    dino.Duck();
+                    duckCounter++;
+                    if (duckCounter == 20)
                     {
-                        jumping = false;
-                        jumpFrame = 0;
+                        dino.isDucking = false;
+                        dino.Height = 3;
+                        duckCounter = 0;
                     }
                 }
 
-                if(ducking)
+                if (jumping)
                 {
-            
-                    dino.Duck();
+                    if (fallFaster)
+                    {
+                        dino.Jump(jumpFrame);
+                        if (jumpFrame < 20)
+                            jumpFrame++;
+                        dino.Jump(jumpFrame);
+                        if (jumpFrame < 20)
+                            jumpFrame++;
+                    }
+                    else
+                    {
+                        dino.Jump(jumpFrame);
+                        jumpFrame++;
+                    }
+                    if (jumpFrame >= 20)
+                    {
+                        jumping = false;
+                        jumpFrame = 0;
+                        fallFaster = false;
+                    }
                 }
 
                 dino.AnimateLegs();
@@ -145,7 +169,6 @@ namespace DinoGame
             }
 
             display.GameOverScreen();
-            Console.ReadLine();
 
         }
 
@@ -169,13 +192,6 @@ namespace DinoGame
                 }
             }
             return false;
-        }
-
-        private static bool askToRestart()
-        {
-            //TODO: Ask the player to restart or not
-            Console.ReadLine();
-            return true;
         }
 
         private static void ToggleDayAndNight()
@@ -224,7 +240,7 @@ namespace DinoGame
         private static bool timeToSpawn(int time)
         {
             var rand = new Random();
-            if (rand.Next(0,5) == 0)
+            if (rand.Next(0, 5) == 0)
             {
                 // Occasionally close together spawn
                 if (time >= rand.Next(35, 50))
