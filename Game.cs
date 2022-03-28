@@ -1,4 +1,6 @@
-﻿namespace DinoGame
+﻿using System.Windows.Input;
+
+namespace DinoGame
 {
     public class Game
     {
@@ -9,6 +11,7 @@
         static int spawnTimer = 0;
         static List<CollisionObject> collisionObjects = new List<CollisionObject>();
         private static bool jumping;
+        private static bool ducking;
         private static int jumpFrame;
 
         public static void Main(string[] args)
@@ -55,21 +58,42 @@
                     }
                 }
 
-                if (Console.KeyAvailable)
+                if(Console.KeyAvailable)
                 {
-                    jumping = true;
-                    Console.ReadKey(true);
+                    ConsoleKey key = Console.ReadKey().Key;
+                if (key == ConsoleKey.Spacebar || key == ConsoleKey.UpArrow || key == ConsoleKey.W)
+                {
+                   jumping = true;
                 }
+                if(key == ConsoleKey.DownArrow || key == ConsoleKey.S)
+                {
+                    ducking = true;
+                }
+
+                }
+
+                while(Console.KeyAvailable)
+                {
+                    Console.ReadKey(false);
+                }
+                
+                
 
                 if (jumping)
                 {
                     dino.Jump(jumpFrame);
                     jumpFrame++;
-                    if(jumpFrame == 10)
+                    if(jumpFrame == 20)
                     {
                         jumping = false;
                         jumpFrame = 0;
                     }
+                }
+
+                if(ducking)
+                {
+            
+                    dino.Duck();
                 }
 
                 dino.AnimateLegs();
