@@ -25,5 +25,11 @@
                 this.DrawPoints = new List<DrawPoint>() { new DrawPoint(X, Y, '┘'), new DrawPoint(X - 1, Y, '/'), new DrawPoint(X, Y + 1, '█'), new DrawPoint(X, Y + 2, '▄'), new DrawPoint(X - 1, Y + 1, '▄'), new DrawPoint(X + 1, Y + 2, '▄') };
             }
         }
+
+        public void Jump(int jumpFrame)
+        {
+            int[] frames = new int[] { 2, 2, 1, 1, 0, 0, -1, -1, -2, -2 };
+            this.Move(frames[jumpFrame]);
+        }
     }
 }

@@ -30,7 +30,7 @@
                 //Drawing
                 objectsToDraw = CheckVisiblity(objectsToDraw);
                 Console.Clear();
-                DisplayScore();
+                display.DisplayScore(score);
                 display.DrawNextFrame(objectsToDraw);
                 display.PrintCurrentFrame();
                 Thread.Sleep(4000/gameSpeed);
@@ -63,7 +63,7 @@
 
                 if (jumping)
                 {
-                    Jump(jumpFrame, dino);
+                    dino.Jump(jumpFrame);
                     jumpFrame++;
                     if(jumpFrame == 10)
                     {
@@ -78,13 +78,6 @@
 
         }
 
-
-        private static void Jump(int jumpFrame, Dino dino)
-        {
-            int[] frames = new int[] { 2, 2, 1, 1, 0,0 ,-1, -1, -2, -2 };
-            dino.Move(frames[jumpFrame]);
-        }
-
         public static List<IDrawable> CheckVisiblity(List<IDrawable> otd)
         {
             List<IDrawable> visiblity = new List<IDrawable>();
@@ -96,12 +89,6 @@
                 }
             }
             return visiblity;
-        }
-
-        public static void DisplayScore()
-        {
-            Console.SetCursorPosition(0, 0);
-            Console.Write("Score: " + score);
         }
 
         private static CollisionObject getObstacle()
