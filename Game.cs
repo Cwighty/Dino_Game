@@ -13,6 +13,8 @@ namespace DinoGame
         private static bool jumping;
         private static bool ducking;
         private static int jumpFrame;
+        static Dino dino;
+        private static Background background;
 
         public static void Main(string[] args)
         {
@@ -21,7 +23,9 @@ namespace DinoGame
             var rand = new Random();
             //TODO: add your cactus/birds/dinos to the collisionObject list to print them out
             // You can create an object at the position you want it : See the bird class for how to implement IDrawable
-            var dino = new Dino(5, 0, 2, 1);
+            background = new Background(displayWidth, displayHeight);
+            objectsToDraw.Add(background);
+            dino = new Dino(5, 0);
             objectsToDraw.Add(dino);
 
             display.PrintStartScreen();
@@ -30,7 +34,28 @@ namespace DinoGame
             //
             while (true)
             {
+                if (checkCollision(objectsToDraw))
+                {
+                    display.GameOverScreen();
+                    if (askToRestart())
+                    {
+                        objectsToDraw.Clear();
+                        objectsToDraw.Add(background);
+                        objectsToDraw.Add(dino);
+                        score = 0;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
                 //Drawing
+                if (score % 2000 == 0)
+                {
+                    ToggleDayAndNight();
+                }
+
                 objectsToDraw = CheckVisiblity(objectsToDraw);
                 Console.Clear();
                 display.DisplayScore(score);
@@ -38,8 +63,13 @@ namespace DinoGame
                 display.PrintCurrentFrame();
                 Thread.Sleep(4000/gameSpeed);
 
+                if (score % 4 == 0)
+                {
+                    background.MoveLeft();
+                }
+
                 //Spawn lottery
-                if(timeToSpawn(spawnTimer))
+                if (timeToSpawn(spawnTimer))
                 {
                     objectsToDraw.Add(getObstacle());
                     spawnTimer = 0;
@@ -101,6 +131,54 @@ namespace DinoGame
                 spawnTimer++;
             }
 
+            display.GameOverScreen();
+            Console.ReadLine();
+
+        }
+
+        private static bool checkCollision(List<IDrawable> drawables)
+        {
+            foreach (var o in drawables)
+            {
+                if (o is Bird)
+                {
+                    if (((Bird)o).GetHitBox().Overlaps(dino.GetHitBox()))
+                    {
+                        return true;
+                    }
+                }
+                else if (o is Cactus)
+                {
+                    if (((Cactus)o).GetHitBox().Overlaps(dino.GetHitBox()))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private static bool askToRestart()
+        {
+            //TODO: Ask the player to restart or not
+            Console.ReadLine();
+            return true;
+        }
+
+        private static void ToggleDayAndNight()
+        {
+            if (Console.BackgroundColor == ConsoleColor.Black)
+            {
+                background.IsDay = true;
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
+            }
+            else
+            {
+                background.IsDay = false;
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
+            }
         }
 
         public static List<IDrawable> CheckVisiblity(List<IDrawable> otd)
