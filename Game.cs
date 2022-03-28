@@ -1,4 +1,4 @@
-﻿using System.Windows.Input;
+﻿using System.Media;
 
 namespace DinoGame
 {
@@ -15,9 +15,11 @@ namespace DinoGame
         private static int jumpFrame;
         static Dino dino;
         private static Background background;
+        private static SoundPlayer player = new SoundPlayer(@"./sound93.wav");
 
         public static void Main(string[] args)
         {
+            
             var display = new Display(displayHeight, displayWidth);
             var objectsToDraw = new List<IDrawable>();
             var rand = new Random();
@@ -36,6 +38,8 @@ namespace DinoGame
             {
                 if (checkCollision(objectsToDraw))
                 {
+                    player = new SoundPlayer(@"Sound\gameoversound.wav");
+                    player.Play();
                     display.GameOverScreen();
                     if (askToRestart())
                     {
@@ -54,6 +58,12 @@ namespace DinoGame
                 if (score % 2000 == 0)
                 {
                     ToggleDayAndNight();
+                }
+
+                if (score % 1000 == 0)
+                {
+                    player = new SoundPlayer(@"Sound\scoreSound.wav");
+                    player.Play();
                 }
 
                 objectsToDraw = CheckVisiblity(objectsToDraw);
@@ -94,7 +104,10 @@ namespace DinoGame
                 if (key == ConsoleKey.Spacebar || key == ConsoleKey.UpArrow || key == ConsoleKey.W)
                 {
                    jumping = true;
-                }
+                   player = new SoundPlayer(@"Sound\jumpSound.wav");
+                   player.Play();
+
+                    }
                 if(key == ConsoleKey.DownArrow || key == ConsoleKey.S)
                 {
                     ducking = true;
@@ -214,7 +227,7 @@ namespace DinoGame
             if (rand.Next(0,5) == 0)
             {
                 // Occasionally close together spawn
-                if (time >= rand.Next(20, 50))
+                if (time >= rand.Next(35, 50))
                 {
                     return true;
                 }

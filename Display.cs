@@ -42,8 +42,9 @@
         public void PrintCurrentFrame()
         {
             ground = rotateArray(ground);
+  
             PrintGround();
-
+            
             char[][] currentFrame = new char[this.height][];
             for (int row = 0; row < this.height; row++)
             {
