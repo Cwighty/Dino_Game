@@ -12,9 +12,9 @@
         public List<DrawPoint> DrawPoints {get => drawPoints; internal set => drawPoints = value; }
         public bool IsVisible { get; set; }
 
-        public (int, int) GetPosition()
+        public HitBox GetHitBox()
         {
-            return (this.X, this.Y);
+            return new HitBox(X, Y, Width, Height);
         }
 
         public CollisionObject(int x, int y, int width, int height)
@@ -26,4 +26,32 @@
             Width = width;
         }
      }
+
+    public class HitBox
+    {
+        public List<(int, int)> Bounds { get; private set; }
+        public HitBox(int x, int y, int width, int height)
+        {
+            Bounds = new List<(int, int)>();
+            for(int i = x; i < x + width; i++)
+            {
+                for (int j = y; j < y + height; j++)
+                {
+                    Bounds.Add((i, j));
+                }
+            }
+        }
+
+        public bool Overlaps(HitBox otherHitBox)
+        {
+            foreach(var point in this.Bounds)
+            {
+                if (otherHitBox.Bounds.Contains(point))
+                    return true;
+            }
+            return false;
+        }
+    }
 }
+
+

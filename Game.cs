@@ -8,6 +8,7 @@
         static int score = 0;
         static int spawnTimer = 0;
         static List<CollisionObject> collisionObjects = new List<CollisionObject>();
+        static Dino dino;
         private static bool jumping;
         private static int jumpFrame;
         private static Background background;
@@ -21,7 +22,7 @@
             // You can create an object at the position you want it : See the bird class for how to implement IDrawable
             background = new Background(displayWidth, displayHeight);
             objectsToDraw.Add(background);
-            var dino = new Dino(5, 0, 2, 1);
+            dino = new Dino(5, 0);
             objectsToDraw.Add(dino);
 
             display.PrintStartScreen();
@@ -30,6 +31,10 @@
             //
             while (true)
             {
+                if (checkCollision(objectsToDraw))
+                {
+                    Thread.Sleep(1000);
+                }
                 //Drawing
                 if (score % 2000 == 0) {
                     ToggleDayAndNight();
@@ -87,10 +92,33 @@
                     }
                 }
 
+
                 score++;
                 spawnTimer++;
             }
 
+        }
+
+        private static bool checkCollision(List<IDrawable> drawables)
+        {
+            foreach (var o in drawables)
+            {
+                if (o is Bird)
+                {
+                    if(((Bird)o).GetHitBox().Overlaps(dino.GetHitBox()))
+                    {
+                        return true;
+                    }
+                }
+                else if (o is Cactus)
+                {
+                    if(((Cactus)o).GetHitBox().Overlaps(dino.GetHitBox()))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         private static void ToggleDayAndNight()
