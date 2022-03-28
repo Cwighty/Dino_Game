@@ -72,6 +72,7 @@
                     }
                 }
 
+                dino.AnimateLegs();
                 score++;
                 spawnTimer++;
             }
