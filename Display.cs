@@ -135,6 +135,14 @@
             Console.SetCursorPosition(width/3, height/3);
             Console.Write("GAME OVER");
         }
+
+        public bool AskToRestart()
+        {
+            Console.SetCursorPosition(width / 3, (height / 3)+1);
+            Console.Write("Press Space To Restart");
+            while (Console.ReadKey().Key != ConsoleKey.Spacebar) { }
+            return true;
+        }
     }
 
 }
