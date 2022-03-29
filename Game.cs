@@ -17,10 +17,11 @@ namespace DinoGame
         static Dino dino = new Dino(5, 0);
         private static Background background = new Background(displayWidth, displayHeight);
         private static SoundPlayer player = new SoundPlayer(@"./sound93.wav");
+        private static SoundPlayer music = new SoundPlayer(@"Sound\8bittune.wav");
 
         public static void Main(string[] args)
         {
-            
+            music.PlayLooping();
             var display = new Display(displayHeight, displayWidth);
             var objectsToDraw = new List<IDrawable>();
             var rand = new Random();
@@ -39,9 +40,9 @@ namespace DinoGame
             while (true)
             {
                 if (checkCollision(objectsToDraw))
-                {
-                    player = new SoundPlayer(@"Sound\gameoversound.wav");
-                    player.Play();
+                { 
+                    //player = new SoundPlayer(@"Sound\gameoversound.wav");
+                    //player.Play();
                     display.GameOverScreen();
                     if (display.AskToRestart())
                     {
@@ -62,10 +63,10 @@ namespace DinoGame
                     ToggleDayAndNight();
                 }
 
-                if (score % 1000 == 0)
+                if (score % 1000 == 0 && score != 0)
                 {
-                    player = new SoundPlayer(@"Sound\scoreSound.wav");
-                    player.Play();
+                    //player = new SoundPlayer(@"Sound\scoreSound.wav");
+                    //player.Play();               
                 }
 
                 objectsToDraw = CheckVisiblity(objectsToDraw);
@@ -106,8 +107,8 @@ namespace DinoGame
                     if (key == ConsoleKey.Spacebar || key == ConsoleKey.UpArrow || key == ConsoleKey.W)
                     {
                         jumping = true;
-                        player = new SoundPlayer(@"Sound\jumpSound.wav");
-                        player.Play();
+                        //player = new SoundPlayer(@"Sound\jumpSound.wav");
+                        //player.Play();
                     }
                     if ((key == ConsoleKey.DownArrow || key == ConsoleKey.S) && !jumping)
                     {
