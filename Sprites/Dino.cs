@@ -9,9 +9,11 @@
         }
         public char Head { get; set; }
         public char Body { get; set; }
-        public bool isInAir { get; set; }
-        public bool isDucking { get; set; }
-
+        public bool IsJumping { get; set; }
+        public int JumpFrame { get; set; }
+        public bool IsDucking { get; set; }
+        public int DuckFrame { get; set; }
+        public bool FallFaster { get; set; }
         
         public void Move(int spaces)
         {
@@ -28,7 +30,7 @@
 
         public void AnimateLegs()
         {
-            if (!this.isDucking)
+            if (!this.IsDucking)
             {
                 if (this.DrawPoints.Contains(new DrawPoint(X + 1, Y, '┘')))
                 {

@@ -2,54 +2,56 @@
 
 namespace DinoGame
 {
-    public class Game
+    public static class Game
     {
-        static int displayWidth = 100;
-        static int displayHeight = 20;
-        static int gameSpeed = 500;
-        static int score = 0;
-        static int spawnTimer = 0;
-        static List<CollisionObject> collisionObjects = new List<CollisionObject>();
-        private static bool jumping;
-        private static int jumpFrame;
-        private static bool fallFaster;
-        private static int duckCounter;
-        static Dino dino = new Dino(5, 0);
+        private static int displayWidth = 100;
+        private static int displayHeight = 20;
+        private static int gameSpeed = 1000;
+
+        private static int score = 0;
+        private static int spawnTimer = 0;
+
+        private static List<IDrawable> objectsToDraw = new List<IDrawable>();
+        private static Display display = new Display(displayHeight, displayWidth);
         private static Background background = new Background(displayWidth, displayHeight);
+        private static Dino dino = new Dino(5, 0);
+
         private static SoundPlayer player = new SoundPlayer(@"./sound93.wav");
         private static SoundPlayer music = new SoundPlayer(@"Sound\8bittune.wav");
 
         public static void Main(string[] args)
         {
-            music.PlayLooping();
-            var display = new Display(displayHeight, displayWidth);
-            var objectsToDraw = new List<IDrawable>();
+            Console.Clear();
+
             var rand = new Random();
-           
-            //TODO: add your cactus/birds/dinos to the collisionObject list to print them out
-            // You can create an object at the position you want it : See the bird class for how to implement IDrawable
-            background = new Background(displayWidth, displayHeight);
+
+            if (args.Contains("-music"))
+            {
+                music.PlayLooping();
+            }
+
             objectsToDraw.Add(background);
-            dino = new Dino(5, 0);
             objectsToDraw.Add(dino);
 
             display.PrintStartScreen();
             while (Console.ReadKey().Key != ConsoleKey.Spacebar) { }
 
-            //
+            //Main loop
             while (true)
             {
-                if (checkCollision(objectsToDraw))
-                { 
-                    //player = new SoundPlayer(@"Sound\gameoversound.wav");
-                    //player.Play();
+                if (isCollision(objectsToDraw))
+                {
+                    if (!args.Contains("-music"))
+                    {
+                        player = new SoundPlayer(@"Sound\gameoversound.wav");
+                        player.Play();
+                    }
+
                     display.GameOverScreen();
+
                     if (display.AskToRestart())
                     {
-                        objectsToDraw.Clear();
-                        objectsToDraw.Add(background);
-                        objectsToDraw.Add(dino);
-                        score = 0;
+                        reinitializeGame();
                     }
                     else
                     {
@@ -57,29 +59,23 @@ namespace DinoGame
                     }
                 }
 
-                //Drawing
                 if (score % 2000 == 0)
                 {
                     ToggleDayAndNight();
                 }
 
+                //Checkpoint sound
                 if (score % 1000 == 0 && score != 0)
                 {
-                    //player = new SoundPlayer(@"Sound\scoreSound.wav");
-                    //player.Play();               
+                    if (!args.Contains("-music"))
+                    {
+                        player = new SoundPlayer(@"Sound\scoreSound.wav");
+                        player.Play();
+                    }
                 }
 
-                objectsToDraw = CheckVisiblity(objectsToDraw);
-                Console.Clear();
-                display.DisplayScore(score);
-                display.DrawNextFrame(objectsToDraw);
-                display.PrintCurrentFrame();
-                Thread.Sleep(4000 / gameSpeed);
-
-                if (score % 4 == 0)
-                {
-                    background.MoveLeft();
-                }
+                drawScreen();
+                moveObjects();
 
                 //Spawn lottery
                 if (timeToSpawn(spawnTimer))
@@ -88,83 +84,14 @@ namespace DinoGame
                     spawnTimer = 0;
                 }
 
-                // Move the birds and the cacti left
-                foreach (var o in objectsToDraw)
-                {
-                    if (o is Bird)
-                    {
-                        ((Bird)o).MoveLeft();
-                    }
-                    else if (o is Cactus)
-                    {
-                        ((Cactus)o).MoveLeft();
-                    }
-                }
+                doKeyboardControl(args);
 
-                if (Console.KeyAvailable)
-                {
-                    ConsoleKey key = Console.ReadKey().Key;
-                    if (key == ConsoleKey.Spacebar || key == ConsoleKey.UpArrow || key == ConsoleKey.W)
-                    {
-                        jumping = true;
-                        //player = new SoundPlayer(@"Sound\jumpSound.wav");
-                        //player.Play();
-                    }
-                    if ((key == ConsoleKey.DownArrow || key == ConsoleKey.S) && !jumping)
-                    {
-                        dino.isDucking = true;
-                        dino.Duck();
-
-                    }
-                    if ((key == ConsoleKey.DownArrow || key == ConsoleKey.S) && jumping)
-                    {
-                        fallFaster = true;
-                    }
+                doDuck();
                 
-                }
-
-                while (Console.KeyAvailable)
-                {
-                    Console.ReadKey(false);
-                }
-
-                if (dino.isDucking)
-                {
-                    dino.Duck();
-                    duckCounter++;
-                    if (duckCounter == 20)
-                    {
-                        dino.isDucking = false;
-                        dino.Height = 3;
-                        duckCounter = 0;
-                    }
-                }
-
-                if (jumping)
-                {
-                    if (fallFaster)
-                    {
-                        dino.Jump(jumpFrame);
-                        if (jumpFrame < 20)
-                            jumpFrame++;
-                        dino.Jump(jumpFrame);
-                        if (jumpFrame < 20)
-                            jumpFrame++;
-                    }
-                    else
-                    {
-                        dino.Jump(jumpFrame);
-                        jumpFrame++;
-                    }
-                    if (jumpFrame >= 20)
-                    {
-                        jumping = false;
-                        jumpFrame = 0;
-                        fallFaster = false;
-                    }
-                }
-
+                doJump();
+                
                 dino.AnimateLegs();
+
                 score++;
                 spawnTimer++;
             }
@@ -173,7 +100,122 @@ namespace DinoGame
 
         }
 
-        private static bool checkCollision(List<IDrawable> drawables)
+        private static void doKeyboardControl(string[] args)
+        {
+            if (Console.KeyAvailable)
+            {
+                ConsoleKey key = Console.ReadKey().Key;
+                if (key == ConsoleKey.Spacebar || key == ConsoleKey.UpArrow || key == ConsoleKey.W)
+                {
+                    dino.IsJumping = true;
+                    if (!args.Contains("-music"))
+                    {
+                        player = new SoundPlayer(@"Sound\jumpSound.wav");
+                        player.Play();
+                    }
+                }
+                if ((key == ConsoleKey.DownArrow || key == ConsoleKey.S) && !dino.IsJumping)
+                {
+                    dino.IsDucking = true;
+                    dino.Duck();
+
+                }
+                if ((key == ConsoleKey.DownArrow || key == ConsoleKey.S) && dino.IsJumping)
+                {
+                    dino.FallFaster = true;
+                }
+            }
+
+            //Clear input buffer
+            while (Console.KeyAvailable)
+            {
+                Console.ReadKey(false);
+            }
+        }
+
+        private static void moveObjects()
+        {
+            //Move background
+            if (score % 4 == 0)
+            {
+                background.MoveLeft();
+            }
+
+            // Move the birds and the cacti left
+            foreach (var o in objectsToDraw)
+            {
+                if (o is Bird)
+                {
+                    ((Bird)o).MoveLeft();
+                }
+                else if (o is Cactus)
+                {
+                    ((Cactus)o).MoveLeft();
+                }
+            }
+        }
+
+        private static void drawScreen()
+        {
+            objectsToDraw = CheckVisiblity(objectsToDraw);
+            Console.Clear();
+            display.DisplayScore(score);
+            display.DrawNextFrame(objectsToDraw);
+            display.PrintCurrentFrame();
+            Thread.Sleep(4000 / gameSpeed);
+        }
+
+        private static void reinitializeGame()
+        {
+            objectsToDraw.Clear();
+            objectsToDraw.Add(background);
+            objectsToDraw.Add(dino);
+            score = 0;
+        }
+
+        private static void doDuck()
+        {
+            if (dino.IsDucking)
+            {
+                dino.Duck();
+                dino.DuckFrame++;
+                if (dino.DuckFrame == 20)
+                {
+                    dino.IsDucking = false;
+                    dino.Height = 3;
+                    dino.DuckFrame = 0;
+                }
+            }
+        }
+
+        private static void doJump()
+        {
+            if (dino.IsJumping)
+            {
+                if (dino.FallFaster)
+                {
+                    dino.Jump(dino.JumpFrame);
+                    if (dino.JumpFrame < 20)
+                        dino.JumpFrame++;
+                    dino.Jump(dino.JumpFrame);
+                    if (dino.JumpFrame < 20)
+                        dino.JumpFrame++;
+                }
+                else
+                {
+                    dino.Jump(dino.JumpFrame);
+                    dino.JumpFrame++;
+                }
+                if (dino.JumpFrame >= 20)
+                {
+                    dino.IsJumping = false;
+                    dino.JumpFrame = 0;
+                    dino.FallFaster = false;
+                }
+            }
+        }
+
+        private static bool isCollision(List<IDrawable> drawables)
         {
             foreach (var o in drawables)
             {

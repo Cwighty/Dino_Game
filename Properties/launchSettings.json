@@ -18,7 +18,7 @@
     "Windows Terminal": {
       "commandName": "Executable",
       "executablePath": "$(userprofile)\\AppData\\Local\\Microsoft\\WindowsApps\\wt.exe",
-      "commandLineArgs": "dotnet.exe run $(projectpath)",
+      "commandLineArgs": "dotnet.exe run $(projectpath) -music",
       "workingDirectory": "$(projectdir)",
       "nativeDebugging": true
     }
