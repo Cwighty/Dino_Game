@@ -131,6 +131,15 @@
             Console.Write("Score: " + score);
         }
 
+        public void DisplayHighScore(int highscore)
+        {
+            if (highscore > 0)
+            {
+                Console.SetCursorPosition(15, 0);
+                Console.Write("High Score: " + highscore);
+            }
+        }
+
         public void GameOverScreen()
         {
             Console.SetCursorPosition(width/3, height/3);

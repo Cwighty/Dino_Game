@@ -28,24 +28,24 @@
                 this.Move(frames[jumpFrame]);
         }
 
-        public void AnimateLegs()
+        public void AnimateLegs(int score)
         {
             if (!this.IsDucking)
             {
-                if (this.DrawPoints.Contains(new DrawPoint(X + 1, Y, '┘')))
+                if (score % 20 < 10)
                 {
-                    this.DrawPoints = new List<DrawPoint>() { new DrawPoint(X + 1, Y, '|'), new DrawPoint(X, Y, '┘'), new DrawPoint(X + 1, Y + 1, '█'), new DrawPoint(X + 1, Y + 2, '▄'), new DrawPoint(X, Y + 1, '▄'), new DrawPoint(X + 2, Y + 2, '▄') };
+                    this.DrawPoints = new List<DrawPoint>() { new DrawPoint(X + 1, Y, '█'), new DrawPoint(X, Y, '▀'), new DrawPoint(X + 1, Y + 1, '█'), new DrawPoint(X + 1, Y + 2, '▄'), new DrawPoint(X, Y + 1, '▄'), new DrawPoint(X + 2, Y + 2, '▄'), new DrawPoint(X - 1, Y + 1, '█') };
                 }
                 else
                 {
-                    this.DrawPoints = new List<DrawPoint>() { new DrawPoint(X + 1, Y, '┘'), new DrawPoint(X, Y, '/'), new DrawPoint(X + 1, Y + 1, '█'), new DrawPoint(X + 1, Y + 2, '▄'), new DrawPoint(X, Y + 1, '▄'), new DrawPoint(X + 2, Y + 2, '▄') };
+                    this.DrawPoints = new List<DrawPoint>() { new DrawPoint(X + 1, Y, '▀'), new DrawPoint(X, Y, '█'), new DrawPoint(X + 1, Y + 1, '█'), new DrawPoint(X + 1, Y + 2, '▄'), new DrawPoint(X, Y + 1, '▄'), new DrawPoint(X + 2, Y + 2, '▄'), new DrawPoint(X - 1, Y + 1, '█') };
                 }
             }
         }
 
         public void Duck()
         {
-            this.DrawPoints = new List<DrawPoint>() { new DrawPoint(X, Y, '▄'), new DrawPoint(X - 1, Y, '▄'), new DrawPoint(X + 1, Y, '▄') };
+            this.DrawPoints = new List<DrawPoint>() { new DrawPoint(X - 1, Y, '█'), new DrawPoint(X, Y, '▄'), new DrawPoint(X + 1, Y, '█'), new DrawPoint(X + 2, Y, '▄') };
             Height = 1;
         }
     }

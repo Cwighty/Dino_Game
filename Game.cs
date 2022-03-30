@@ -9,6 +9,7 @@ namespace DinoGame
         private static int gameSpeed = 1000;
 
         private static int score = 0;
+        private static int highscore = 0;
         private static int spawnTimer = 0;
 
         private static List<IDrawable> objectsToDraw = new List<IDrawable>();
@@ -51,6 +52,7 @@ namespace DinoGame
 
                     if (display.AskToRestart())
                     {
+                        setHighScore();
                         reinitializeGame();
                     }
                     else
@@ -90,8 +92,7 @@ namespace DinoGame
                 
                 doJump();
                 
-                dino.AnimateLegs();
-
+                dino.AnimateLegs(score);
                 score++;
                 spawnTimer++;
             }
@@ -147,6 +148,7 @@ namespace DinoGame
                 if (o is Bird)
                 {
                     ((Bird)o).MoveLeft();
+                    ((Bird)o).AnimateWings(score);
                 }
                 else if (o is Cactus)
                 {
@@ -160,6 +162,7 @@ namespace DinoGame
             objectsToDraw = CheckVisiblity(objectsToDraw);
             Console.Clear();
             display.DisplayScore(score);
+            display.DisplayHighScore(highscore);
             display.DrawNextFrame(objectsToDraw);
             display.PrintCurrentFrame();
             Thread.Sleep(4000 / gameSpeed);
@@ -171,6 +174,14 @@ namespace DinoGame
             objectsToDraw.Add(background);
             objectsToDraw.Add(dino);
             score = 0;
+        }
+
+        private static void setHighScore()
+        {
+            if (score > highscore)
+            {
+                highscore = score;
+            }
         }
 
         private static void doDuck()
