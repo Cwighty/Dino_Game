@@ -48,8 +48,6 @@ namespace DinoGame
                         player.Play();
                     }
 
-                    display.GameOverScreen();
-
                     if (display.AskToRestart())
                     {
                         setHighScore();
@@ -96,8 +94,6 @@ namespace DinoGame
                 score++;
                 spawnTimer++;
             }
-
-            display.GameOverScreen();
 
         }
 

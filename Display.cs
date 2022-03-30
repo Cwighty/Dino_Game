@@ -76,10 +76,8 @@
 
         public void PrintStartScreen()
         {
-            Console.SetCursorPosition(this.width / 5, this.height / 2);
-            Console.WriteLine("Press the spacebar to start the game.");
-            Console.SetCursorPosition(this.width / 14, this.height / 2 + 1);
-            Console.WriteLine("Use the up and down arrows to control the dinosaur.");
+            string text = System.IO.File.ReadAllText(@$"{Resource.Sprites}\startscreen.txt");
+            Console.WriteLine(text);
         }
 
         public void PrintGround()
@@ -140,14 +138,10 @@
             }
         }
 
-        public void GameOverScreen()
-        {
-            Console.SetCursorPosition(width/3, height/3);
-            Console.Write("GAME OVER");
-        }
-
         public bool AskToRestart()
         {
+            Console.SetCursorPosition(width / 3 + 5, height / 3);
+            Console.Write("GAME OVER");
             Console.SetCursorPosition(width / 3, (height / 3)+1);
             Console.Write("Press Space To Restart");
             while (Console.ReadKey().Key != ConsoleKey.Spacebar) { }
